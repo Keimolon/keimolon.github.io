@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <title>Ryabov AA</title>
+   <link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+
+<script src="https://widget.cloudpayments.ru/bundles/cloudpayments.js"></script>
+
+<body class="modal-open">
+
+   <header class="page-header header">
+      <div class="page-header__wrapper header__wrapper">
+         <a href="/" class="page-header__link"></a>
+         <h1 class="page-header__title">Благотворительный фонд "Добрые ручки"</h1>
+         <p class="header__text">Благотворительный фонд "Добрые ручки" создан для оказания помощи детям с заболеваниями, которые способна победить современная медицина. Мы хотим побудить людей принять участие в судьбе каждого ребенка, на долю которого выпало серьезное испытание.</p>
+      </div>
+   </header>
+
+   <main class="page-goods page-goods--widget">
+      <h2 class="visually-hidden">Благотворительное окно</h2>
+      <ul class="page-goods__list page-goods__list--widget">
+      <li class="goods">
+      <div class="goods__image-wrapper goods__image-wrapper--checkout">
+         <img src=".\assets\img\1.jpg" srcset=".\assets\img\1.jpg" alt="Счастье 2x" class="goods__image">							
+      </div>
+      <div class="goods__content">
+      <div class="goods__text-wrapper">
+         <h3 class="goods__text">Подари счастье</h3>
+         <p class="goods__text-price">100 р.</p>
+      </div>
+		<input class="input-field" type="email" placeholder="ваш e-mail" id="email" title="Введите свой электронный адрес"><span>Ваш email</span>
+		<p>
+		   <input class="input-field" type="tel" placeholder="Ваш номер телефона" id="tel" title="Введите свой электронный адрес"><span>номер телефона</span>
+		</p>
+		<p><input class="input-field" type="fio" placeholder="Ваше ФИО" id="fio" title="Введите свой электронный адрес"><span>ФИО</span></p>
+		<p>
+		   <input class="input-field" type="comment" placeholder="Ваш комментарий" id="comment" title="Введите свой электронный адрес"><span">комментарий</span>
+		</p>
+
+		<p><input type="checkbox" id="check">Ежемесячны платеж</p>
+      <input type="button" value="Купить" onclick="chek()">
+      <script >
+         function tstjs() {
+            var receipt = {
+                        Items: [//товарные позиции
+                           {
+                              label: 'Наименование товара 3', //наименование товара
+                              price: 300.00, //цена
+                              quantity: 3.00, //количество
+                              amount: 900.00, //сумма
+                              vat: 20, //ставка НДС
+                              method: 0, // тег-1214 признак способа расчета - признак способа расчета
+                              object: 0, // тег-1212 признак предмета расчета - признак предмета товара, работы, услуги, платежа, выплаты, иного предмета расчета
+                           }
+                        ],
+                        taxationSystem: 0, //система налогообложения; необязательный, если у вас одна система налогообложения
+                        email: 'user@example.com', //e-mail покупателя, если нужно отправить письмо с чеком
+                        phone: '8996737275334', //телефон покупателя в любом формате, если нужно отправить сообщение со ссылкой на чек
+                        isBso: false, //чек является бланком строгой отчетности
+                        amounts: {
+                           electronic: 900.00, // Сумма оплаты электронными деньгами
+                           advancePayment: 0.00, // Сумма из предоплаты (зачетом аванса) (2 знака после запятой)
+                           credit: 0.00, // Сумма постоплатой(в кредит) (2 знака после запятой)
+                           provision: 0.00 // Сумма оплаты встречным предоставлением (сертификаты, др. мат.ценности) (2 знака после запятой)
+                        }
+            };
+
+            var data = { //содержимое элемента data
+               phone:document.getElementById("tel").value,
+               CloudPayments: {
+                  CustomerReceipt: receipt, //чек для первого платежа
+                  recurrent: {
+                              interval: 'Month',
+                              period: 1,
+                              customerReceipt: receipt  //чек для регулярных платеже
+                  }
+               }
+
+            };
+
+            var payments = new cp.CloudPayments({
+               yandexPaySupport: true,
+               applePaySupport: false,
+               googlePaySupport: false,
+               masterPassSupport: false,
+               tinkoffInstallmentSupport: false
+            });
+
+            payments.pay("charge", { // options
+               publicId: 'pk_8bb7fb15a271bfcbf6807a55a50a7',
+               description: document.getElementById("comment").value,
+               amount: 100,
+               currency: 'RUB',
+               invoiceId: 1234567,
+               accountId: document.getElementById("email").value,
+               email: document.getElementById("email").value,
+               data: data,
+            }).then((result) => {
+               // Объект типа WidgetResult
+               console.log('result', result);
+            });
+            } 
+
+      </script>
+
+      <script >
+         function tstjs2() {
+            var payments = new cp.CloudPayments({
+               yandexPaySupport: true,
+               applePaySupport: false,
+               googlePaySupport: false,
+               masterPassSupport: false,
+               tinkoffInstallmentSupport: false
+            });
+
+         var data = { //содержимое элемента data 
+            name: document.getElementById("fio").value,
+            lastName: document.getElementById("fio").value,   
+            phone:document.getElementById("tel").value,
+            };
+
+         payments.pay("charge", { // options
+            publicId: 'pk_8bb7fb15a271bfcbf6807a55a50a7',
+            description: document.getElementById("comment").value,
+            amount: 100,
+            currency: 'RUB',
+            invoiceId: 1234567,
+            accountId: document.getElementById("email").value,
+            email: document.getElementById("email").value,
+            data: data  
+         }).then((result) => {
+            // Объект типа WidgetResult
+            console.log('result', result);
+         });
+         } 
+
+
+      </script>
+					
+      <script>
+         function chek() {
+            var chk = document.getElementById("check")
+            if (chk.checked) { tstjs() }
+            else { tstjs2() }
+            
+            console.log('Checked = ', chk.checked)
+         }
+      </script>
+</body>
+</html>
